@@ -41,7 +41,7 @@ void AppClass::Update(void)
 	if (m_bFPC == true)
 		CameraRotation();
 
-	m_pCamera->SetProjection(myCamera->GetProjection(false));
+	m_pCamera->SetProjection(myCamera->GetProjection(true));
 	m_pCamera->SetView(myCamera->GetView());
 
 	//Adds all loaded instance to the render list

@@ -8,7 +8,6 @@
 
 #include "MyCamera.h"
 
-
 /*Notes to self delete later.....
 
 glm::perspective( fovy,    //view angle
@@ -44,6 +43,8 @@ MyCamera::MyCamera()
 	camTarget = vector3(0.0f, 0.0f, 0.0f);
 	camPosition = vector3(0.0f, 0.0f, -10.0f);
 	camUp = vector3(0.0f, 1.0f, 0.0f);
+
+
 }
 
 //Get instance of camera
@@ -74,13 +75,19 @@ matrix4 MyCamera::GetView()
 //Retrieve the projection matrix
 matrix4 MyCamera::GetProjection(bool bOrthographic)
 {
+	//initial projection based on aspect ratio
+	glm::mat4 m4Projection = glm::perspective(fov, aspectRatio, clipFront, clipBack);
+
+	//if orthographic projection
 	if (bOrthographic)
 	{
-//TODO - this should be based on aspectRatio
-		return matrix4(IDENTITY);
+	    m4Projection = glm::ortho(-10.0f, 10.0f, -10.0f, 10.f, 0.0f, 100.0f);
+		return m4Projection;
+		
 	}
 	
-	return glm::perspective(fov,aspectRatio,clipFront,clipBack);
+	return m4Projection;
+	//return glm::perspective(fov,aspectRatio,clipFront,clipBack);
 }
 
 void MyCamera::SetPosition(vector3 v3Position)
