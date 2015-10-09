@@ -21,6 +21,35 @@ void AppClass::ProcessKeyboard(void)
 		bModifier = true;
 #pragma endregion
 
+	if (bModifier)
+		fSpeed *= 10.0f;
+
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::W))  //+Forward
+	{
+		myCamera->MoveForward(fSpeed);
+	}
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::S))  //-Forward
+	{
+		myCamera->MoveForward(fSpeed * -1.0f);
+	}
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::D))  //+Sideways
+	{
+		myCamera->MoveSideways(fSpeed);
+	}
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::A))  //-Sideways
+	{
+		myCamera->MoveSideways(fSpeed * -1.0f);
+	}
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Q))  //+Vertical
+	{
+		myCamera->MoveVertical(fSpeed);
+	}
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::E))  //-Vertical
+	{
+		myCamera->MoveVertical(fSpeed * -1.0f);
+	}
+
+/* ...delete this prgma section?
 	#pragma region Camera Positioning
 	if(bModifier)
 		fSpeed *= 10.0f;
@@ -37,6 +66,7 @@ void AppClass::ProcessKeyboard(void)
 		m_pCamera->MoveSideways(fSpeed);
 	m_pCamera->CalculateView();
 #pragma endregion
+*/
 
 #pragma region Other Actions
 	ON_KEY_PRESS_RELEASE(Escape, NULL, PostMessage(m_pWindow->GetHandler(), WM_QUIT, NULL, NULL))

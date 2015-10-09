@@ -10,6 +10,23 @@ void AppClass::InitWindow(String a_sWindowName)
 }
 void AppClass::InitVariables(void)
 {
+	myCamera = MyCamera::GetInstance();
+	
+	//Load model objs
+	m_pMeshMngr->LoadModel("Minecraft\\MC_Creeper.obj", "Creeper");
+	m_pMeshMngr->LoadModel("Minecraft\\MC_Zombie.obj", "Zombie");
+	m_pMeshMngr->LoadModel("Minecraft\\MC_Steve.obj", "Steve");
+	//set model matrix
+	m_pMeshMngr->SetModelMatrix(
+		glm::translate(matrix4(IDENTITY), vector3(0.0f, 0.0f, 10.0f)),
+		"Steve");
+	m_pMeshMngr->SetModelMatrix(
+		glm::translate(matrix4(IDENTITY), vector3(2.0f, 0.0f, 0.0f)),
+		"Creeper");
+	m_pMeshMngr->SetModelMatrix(
+		glm::translate(matrix4(IDENTITY), vector3(-2.0f, 0.0f, 0.0f)),
+		"Zombie");
+
 }
 
 void AppClass::Update(void)
@@ -23,6 +40,9 @@ void AppClass::Update(void)
 	//First person camera movement
 	if (m_bFPC == true)
 		CameraRotation();
+
+	m_pCamera->SetProjection(myCamera->GetProjection(false));
+	m_pCamera->SetView(myCamera->GetView());
 
 	//Adds all loaded instance to the render list
 	m_pMeshMngr->AddInstanceToRenderList("ALL");
@@ -41,5 +61,7 @@ void AppClass::Display(void)
 
 void AppClass::Release(void)
 {
+	myCamera->ReleaseInst();
+
 	super::Release(); //release the memory of the inherited fields
 }
