@@ -2,7 +2,8 @@
 // File: MyCamera.h
 // DSA2 A08_CameraClass
 // Authors:
-// 
+//		Mary Spencer
+//		Martin Kurtz
 // Singleton Camera Class
 /////////////////////////////////////////////////////////////////////
 

@@ -150,6 +150,7 @@ void MyCamera::ChangePitch(float fIncrement)
 	//When rotating the right vec it changes both camDir & camUp
 	//both new values are needed
 	camDir = glm::rotate(qPitch, camDir);
+	camUp = glm::rotate(qPitch, camUp);
 
 	//Update Camera target
 	camTarget = camPosition + camDir;
@@ -181,7 +182,7 @@ void MyCamera::ChangeYaw(float fIncrement)
 	vector3 dirRotCross = glm::cross(camDir, rotDir);
 
 	//quat representing the rotation
-	glm::quat qYaw = glm::angleAxis(camYaw, dirRotCross);
+	glm::quat qYaw = glm::angleAxis(camYaw, camUp);
 
 	//rotate and update target
 	camDir = glm::rotate(qYaw, camDir);
