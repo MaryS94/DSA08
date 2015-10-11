@@ -7,6 +7,7 @@
 /////////////////////////////////////////////////////////////////////
 
 #include "MyCamera.h"
+#include "AppClass.h"
 
 /*Notes to self delete later.....
 
@@ -43,7 +44,6 @@ MyCamera::MyCamera()
 	camTarget = vector3(0.0f, 0.0f, 0.0f);
 	camPosition = vector3(0.0f, 0.0f, -10.0f);
 	camUp = vector3(0.0f, 1.0f, 0.0f);
-
 
 }
 
@@ -133,17 +133,29 @@ void MyCamera::MoveVertical(float fIncrement)
 	camTarget += (camUp * fIncrement);
 }
 
+//===============ROTATE X==================
 void MyCamera::ChangePitch(float fIncrement)
 {
-	//TODO
+	//NEEDS TO BE DONE USING QUATERNIONS
+	camTarget.x += fIncrement;
+	glm::lookAt(camPosition, camTarget, camUp);
+	
 }
+
+//==============ROTATE Z==================
 void MyCamera::ChangeRoll(float fIncrement)
 {
-	//TODO
+	//NEEDS TO BE DONE USING QUATERNIONS
+	camTarget.z += fIncrement;
+	glm::lookAt(camPosition, camTarget, camUp);
 }
+
+//===============ROTATE Y================
 void MyCamera::ChangeYaw(float fIncrement)
 {
-	//TODO
+	//NEEDS TO BE DONE USING QUATERNIONS
+	camTarget.y += fIncrement;
+	glm::lookAt(camPosition, camTarget, camUp);
 }
 
 

@@ -76,10 +76,77 @@ void AppClass::ProcessMouse(void)
 {
 	m_bArcBall = false;
 	m_bFPC = false;
+
+	UINT MouseX, newMouseX;
+	UINT MouseY, newMouseY;
+	UINT CenterX, CenterY;
+	POINT pt, pt2;
+	float deltaMouse;
+
+	//get center of window
+	CenterX = m_pSystem->WindowX + m_pSystem->WindowWidth / 2;
+	CenterY = m_pSystem->WindowY + m_pSystem->WindowHeight / 2;
+
+	GetCursorPos(&pt); 
+
+	MouseX = pt.x;
+	MouseY = pt.y;
+
+	SetCursorPos(CenterX, CenterY);
 	
-	if(sf::Mouse::isButtonPressed(sf::Mouse::Button::Middle))
+
+	if (sf::Mouse::isButtonPressed(sf::Mouse::Button::Middle))
+	{
+	
 		m_bArcBall = true;
+
+	}
 	
-	if(sf::Mouse::isButtonPressed(sf::Mouse::Button::Right))
+	if (sf::Mouse::isButtonPressed(sf::Mouse::Button::Right))
+	{
 		m_bFPC = true;
+
+		//ROLL ???
+		if (MouseX < CenterX && MouseY < CenterY){
+			deltaMouse = static_cast<float>(CenterX - MouseX);
+			myCamera->ChangeRoll(-.07);
+		}
+		//ROLL ???
+		else if (MouseX > CenterX && MouseY > CenterY){
+			deltaMouse = static_cast<float>(CenterX - MouseX);
+			myCamera->ChangeRoll(.07);
+		}
+	
+
+		// PITCH LEFT
+		if (MouseX < CenterX){
+			deltaMouse = static_cast<float>(CenterX - MouseX);
+			myCamera->ChangePitch(.07);
+		}
+		// PITCH RIGHT
+		else if (MouseX > CenterX)
+		{
+			deltaMouse = static_cast<float>(MouseX - CenterX);
+			myCamera->ChangePitch(-.07);
+		}
+
+
+
+
+
+		// YAW DOWN
+	    if (MouseY < CenterY){
+			deltaMouse = static_cast<float>(CenterY - MouseY);
+			myCamera->ChangeYaw(.07);
+		}
+
+		//YAW UP
+		else if (MouseY > CenterY)
+		{
+			deltaMouse = static_cast<float>(MouseX - CenterX);
+			myCamera->ChangeYaw(-.07);
+		}
+
+	}
+
 }

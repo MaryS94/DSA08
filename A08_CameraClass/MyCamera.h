@@ -30,6 +30,8 @@ private:
 	vector3 camPosition;
 	vector3 camTarget;
 	vector3 camUp;
+	
+
 
 
 public:
