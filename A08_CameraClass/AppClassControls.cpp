@@ -48,25 +48,31 @@ void AppClass::ProcessKeyboard(void)
 	{
 		myCamera->MoveVertical(fSpeed * -1.0f);
 	}
-
-/* ...delete this prgma section?
-	#pragma region Camera Positioning
-	if(bModifier)
-		fSpeed *= 10.0f;
-	if(sf::Keyboard::isKeyPressed(sf::Keyboard::W))
-		m_pCamera->MoveForward(fSpeed);
-
-	if(sf::Keyboard::isKeyPressed(sf::Keyboard::S))
-		m_pCamera->MoveForward(-fSpeed);
-	
-	if(sf::Keyboard::isKeyPressed(sf::Keyboard::A))
-		m_pCamera->MoveSideways(-fSpeed);
-
-	if(sf::Keyboard::isKeyPressed(sf::Keyboard::D))
-		m_pCamera->MoveSideways(fSpeed);
-	m_pCamera->CalculateView();
-#pragma endregion
-*/
+	//Alternative rot controls
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::I)) //pitch up
+	{
+		myCamera->ChangePitch(fSpeed *100.0f);
+	}
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::K)) //pitch down
+	{
+		myCamera->ChangePitch(fSpeed * -100.0f);
+	}
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::J)) //yaw left
+	{
+		myCamera->ChangeYaw(fSpeed * 100.0f);
+	}
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::L)) //yaw right
+	{
+		myCamera->ChangeYaw(fSpeed * -100.0f);
+	}
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::U)) //roll left
+	{
+		myCamera->ChangeRoll(fSpeed * 100.0f);
+	}
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::O)) //roll right
+	{
+		myCamera->ChangeRoll(fSpeed * -100.0f);
+	}
 
 #pragma region Other Actions
 	ON_KEY_PRESS_RELEASE(Escape, NULL, PostMessage(m_pWindow->GetHandler(), WM_QUIT, NULL, NULL))
@@ -102,10 +108,8 @@ void AppClass::ProcessMouse(void)
 
 	}
 	
-	if (sf::Mouse::isButtonPressed(sf::Mouse::Button::Right))
+	if (sf::Mouse::isButtonPressed(sf::Mouse::Button::Left))
 	{
-		m_bFPC = true;
-
 		//ROLL ???
 		if (MouseX < CenterX && MouseY < CenterY){
 			deltaMouse = static_cast<float>(CenterX - MouseX);
@@ -116,35 +120,36 @@ void AppClass::ProcessMouse(void)
 			deltaMouse = static_cast<float>(CenterX - MouseX);
 			myCamera->ChangeRoll(.07);
 		}
-	
+	}
 
-		// PITCH LEFT
+	if (sf::Mouse::isButtonPressed(sf::Mouse::Button::Right))
+	{
+		m_bFPC = true;
+
+
+		// YAW LEFT
 		if (MouseX < CenterX){
 			deltaMouse = static_cast<float>(CenterX - MouseX);
-			myCamera->ChangePitch(.07);
+			myCamera->ChangeYaw(1.0f);
 		}
-		// PITCH RIGHT
+		// YAW RIGHT
 		else if (MouseX > CenterX)
 		{
 			deltaMouse = static_cast<float>(MouseX - CenterX);
-			myCamera->ChangePitch(-.07);
+			myCamera->ChangeYaw(-1.0f);
 		}
 
-
-
-
-
-		// YAW DOWN
+		// PITCH DOWN
 	    if (MouseY < CenterY){
 			deltaMouse = static_cast<float>(CenterY - MouseY);
-			myCamera->ChangeYaw(.07);
+			myCamera->ChangePitch(1.0f);
 		}
 
-		//YAW UP
+		//PITCH UP
 		else if (MouseY > CenterY)
 		{
-			deltaMouse = static_cast<float>(MouseX - CenterX);
-			myCamera->ChangeYaw(-.07);
+			deltaMouse = static_cast<float>(MouseY - CenterY);
+			myCamera->ChangePitch(-1.0f);
 		}
 
 	}

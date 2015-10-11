@@ -31,7 +31,10 @@ private:
 	vector3 camTarget;
 	vector3 camUp;
 	
-
+	//Cam Rotations
+	float camRoll;
+	float camPitch;
+	float camYaw;
 
 
 public:

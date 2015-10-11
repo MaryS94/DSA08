@@ -136,15 +136,37 @@ void MyCamera::MoveVertical(float fIncrement)
 //===============ROTATE X==================
 void MyCamera::ChangePitch(float fIncrement)
 {
-	//NEEDS TO BE DONE USING QUATERNIONS
-	camTarget.x += fIncrement;
-	glm::lookAt(camPosition, camTarget, camUp);
+	camPitch = fIncrement;
+	//Pitch rotates on the camRight Vector
+	//           \|_     ([\]camDir x [|]camUp) = [_]camRight 
 	
+	//Get CamDirection & right
+	vector3 camDir = glm::normalize(camTarget - camPosition);
+	vector3 camRight = glm::cross(camDir, camUp);
+
+	//Get pitch quaternion (angle applied to the rot axis(right))
+	glm::quat qPitch = glm::angleAxis(camPitch, camRight);
+	//When rotating the right vec it changes both camDir & camUp
+	//both new values are needed
+	camDir = glm::rotate(qPitch, camDir);
+	camUp = glm::rotate(qPitch, camUp);
+
+	//Update Camera target
+	camTarget = camPosition + camDir;
 }
 
 //==============ROTATE Z==================
 void MyCamera::ChangeRoll(float fIncrement)
 {
+	//Roll rotates on Dir vec
+
+	//when rotating dir vec, it changes up and right
+	//only need to know the new up
+
+	//target doesnt change
+
+
+
 	//NEEDS TO BE DONE USING QUATERNIONS
 	camTarget.z += fIncrement;
 	glm::lookAt(camPosition, camTarget, camUp);
