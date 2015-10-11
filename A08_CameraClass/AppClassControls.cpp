@@ -1,3 +1,15 @@
+//==================================================================================================
+//	CONTROLS:
+//  Left  Click & Drag: Roll
+//  Right Click & Drag: Pitch/Yaw
+//  W: Forward
+//  S: Backwards
+//  A: Left
+//  D: Right
+//  Q: Up
+//  E: Down
+//==================================================================================================
+
 #include "AppClass.h"
 void AppClass::ProcessKeyboard(void)
 {
@@ -98,58 +110,58 @@ void AppClass::ProcessMouse(void)
 	MouseX = pt.x;
 	MouseY = pt.y;
 
-	SetCursorPos(CenterX, CenterY);
+	//SetCursorPos(CenterX, CenterY);
 	
 
 	if (sf::Mouse::isButtonPressed(sf::Mouse::Button::Middle))
 	{
 	
-		m_bArcBall = true;
+		m_bArcBall = false;
 
 	}
 	
 	if (sf::Mouse::isButtonPressed(sf::Mouse::Button::Left))
 	{
-		//ROLL ???
-		if (MouseX < CenterX && MouseY < CenterY){
+		//ROLL CW (right)
+		if (MouseX > CenterX ){
 			deltaMouse = static_cast<float>(CenterX - MouseX);
-			myCamera->ChangeRoll(-.07);
+			myCamera->ChangeRoll(-1.0f);
 		}
-		//ROLL ???
-		else if (MouseX > CenterX && MouseY > CenterY){
+		//ROLL CCW (left)
+		else if (MouseX < CenterX){
 			deltaMouse = static_cast<float>(CenterX - MouseX);
-			myCamera->ChangeRoll(.07);
+			myCamera->ChangeRoll(1.0f);
 		}
 	}
 
 	if (sf::Mouse::isButtonPressed(sf::Mouse::Button::Right))
 	{
-		m_bFPC = true;
-
+		m_bFPC = false;
+	
 
 		// YAW LEFT
-		if (MouseX < CenterX){
+		 if (MouseX < CenterX){
 			deltaMouse = static_cast<float>(CenterX - MouseX);
-			myCamera->ChangeYaw(1.0f);
+			myCamera->ChangeYaw(.5f);
 		}
 		// YAW RIGHT
 		else if (MouseX > CenterX)
 		{
 			deltaMouse = static_cast<float>(MouseX - CenterX);
-			myCamera->ChangeYaw(-1.0f);
+			myCamera->ChangeYaw(-.5f);
 		}
 
 		// PITCH DOWN
-	    if (MouseY < CenterY){
+	     if (MouseY < CenterY){
 			deltaMouse = static_cast<float>(CenterY - MouseY);
-			myCamera->ChangePitch(1.0f);
+			myCamera->ChangePitch(.5f);
 		}
 
 		//PITCH UP
 		else if (MouseY > CenterY)
 		{
 			deltaMouse = static_cast<float>(MouseY - CenterY);
-			myCamera->ChangePitch(-1.0f);
+			myCamera->ChangePitch(-.5f);
 		}
 
 	}

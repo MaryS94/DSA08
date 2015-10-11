@@ -2,7 +2,8 @@
 // File: MyCamera.cpp
 // DSA2 A08_CameraClass
 // Authors:
-// 
+//		Mary Spencer
+//		Martin Kurtz
 // Singleton Camera Class
 /////////////////////////////////////////////////////////////////////
 
@@ -44,6 +45,7 @@ MyCamera::MyCamera()
 	camTarget = vector3(0.0f, 0.0f, 0.0f);
 	camPosition = vector3(0.0f, 0.0f, -10.0f);
 	camUp = vector3(0.0f, 1.0f, 0.0f);
+	
 
 }
 
@@ -87,7 +89,6 @@ matrix4 MyCamera::GetProjection(bool bOrthographic)
 	}
 	
 	return m4Projection;
-	//return glm::perspective(fov,aspectRatio,clipFront,clipBack);
 }
 
 void MyCamera::SetPosition(vector3 v3Position)
@@ -133,7 +134,7 @@ void MyCamera::MoveVertical(float fIncrement)
 	camTarget += (camUp * fIncrement);
 }
 
-//===============ROTATE X==================
+//===============ROTATE UP &&  DOWN ==================
 void MyCamera::ChangePitch(float fIncrement)
 {
 	camPitch = fIncrement;
@@ -149,7 +150,6 @@ void MyCamera::ChangePitch(float fIncrement)
 	//When rotating the right vec it changes both camDir & camUp
 	//both new values are needed
 	camDir = glm::rotate(qPitch, camDir);
-	camUp = glm::rotate(qPitch, camUp);
 
 	//Update Camera target
 	camTarget = camPosition + camDir;
@@ -158,26 +158,34 @@ void MyCamera::ChangePitch(float fIncrement)
 //==============ROTATE Z==================
 void MyCamera::ChangeRoll(float fIncrement)
 {
-	//Roll rotates on Dir vec
+	camRoll = fIncrement;
 
+	//Roll rotates on Dir vec
+	vector3 camDir  = glm::normalize(camTarget - camPosition);
+	glm::quat qRoll = glm::angleAxis(camRoll, camDir);
 	//when rotating dir vec, it changes up and right
 	//only need to know the new up
+	camUp = glm::rotate(qRoll, camUp);
 
 	//target doesnt change
-
-
-
-	//NEEDS TO BE DONE USING QUATERNIONS
-	camTarget.z += fIncrement;
-	glm::lookAt(camPosition, camTarget, camUp);
 }
 
-//===============ROTATE Y================
+//===============ROTATE LEFT && RIGHT ================
 void MyCamera::ChangeYaw(float fIncrement)
 {
-	//NEEDS TO BE DONE USING QUATERNIONS
-	camTarget.y += fIncrement;
-	glm::lookAt(camPosition, camTarget, camUp);
+	camYaw = fIncrement;
+
+	//camera direction, direction rotating to (in this case +- X), and cross product between them
+	vector3 camDir      = glm::normalize(camTarget - camPosition);
+	vector3 rotDir		= vector3(1.0f, 0.0f, 0.0f);
+	vector3 dirRotCross = glm::cross(camDir, rotDir);
+
+	//quat representing the rotation
+	glm::quat qYaw = glm::angleAxis(camYaw, dirRotCross);
+
+	//rotate and update target
+	camDir = glm::rotate(qYaw, camDir);
+	camTarget = camPosition + camDir;
 }
 
 
